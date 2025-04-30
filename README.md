@@ -64,3 +64,12 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+### Issues
+1. i had the issue of adding a dependendy and all, so i used this
+
+forge install smartcontractkit/chainlink-brownie-contracts@1.3.0 --no-commit
+
+remappings = ["@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/"]
+
+

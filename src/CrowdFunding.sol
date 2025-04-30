@@ -12,12 +12,17 @@ contract CrowdFunding {
     address public owner;
     // State variables
     struct Campaign {
-        address owner;
-        uint256 targetAmount;
-        uint256 deadline;
-        uint256 totalAmountRaised;
-        bool isCompleted;
-    }
+    address creator;              // Who started the campaign
+    string title;                 // Title of the campaign
+    string description;           // Brief explanation of the goal
+    uint256 targetAmount;         // How much the creator wants to raise
+    uint256 deadline;             // Unix timestamp for the deadline
+    uint256 totalAmountRaised;    // How much has been raised so far
+    address[] contributors;       // List of funders (optional, gas heavy)
+    mapping(address => uint256) contributions; // Who gave what (for refunds)
+    bool isCompleted;             // Whether campaign ended successfully
+    bool isWithdrawn;             // If funds have been withdrawn by creator
+}
     mapping (uint256 => Campaign) public Campaigns;
 
     constructor (address priceFeed) {
@@ -25,9 +30,9 @@ contract CrowdFunding {
         owner = msg.sender;
     }
 
-    function deposit () public payable  {
+    function deposiToCampaign () public payable  {
         require(msg.value.getConversionRate(s_PriceFeed) >= 10, "Not enough");
-        
+
         
     }
 

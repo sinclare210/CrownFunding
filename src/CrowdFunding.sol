@@ -1,9 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {DataConsumerV3} from "../src/PriceConverter.sol";
+import {AggregatorV3Interface} from "../src/PriceConverter.sol";
 
 contract CrowdFunding {
+    
     address public owner;
     // State variables
     struct Campaign {
@@ -19,7 +20,8 @@ contract CrowdFunding {
         owner = msg.sender;
     }
 
-    function getPrice () public returns (uint256) {
+    function getPrice () public view returns (int256) {
+       
         
     }
 

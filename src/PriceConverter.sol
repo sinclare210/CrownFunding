@@ -3,48 +3,28 @@ pragma solidity ^0.8.18;
 
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED
- * VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
 
-/**
- * If you are reading data feeds on L2 networks, you must
- * check the latest answer from the L2 Sequencer Uptime
- * Feed to ensure that the data is accurate in the event
- * of an L2 sequencer outage. See the
- * https://docs.chain.link/data-feeds/l2-sequencer-feeds
- * page for details.
- */
+library PriceConverter {
 
-contract DataConsumerV3 {
-    AggregatorV3Interface internal dataFeed;
-
-    /**
-     * Network: Sepolia
-     * Aggregator: ETH/USD
-     * Address: 0x694AA1769357215DE4FAC081bf1f309aDC325306
-     */
-    constructor() {
-        dataFeed = AggregatorV3Interface(
-            0x694AA1769357215DE4FAC081bf1f309aDC325306
-        );
-    }
-
-    /**
-     * Returns the latest answer.
-     */
-    function getChainlinkDataFeedLatestAnswer() public view returns (int) {
-        // prettier-ignore
-        (
+    function getPrice (AggregatorV3Interface priceFeed) internal view returns (uint256){
+         (
             /* uint80 roundId */,
             int256 answer,
             /*uint256 startedAt*/,
             /*uint256 updatedAt*/,
             /*uint80 answeredInRound*/
-        ) = dataFeed.latestRoundData();
-        return answer;
+        ) = priceFeed.latestRoundData();
+        return uint256(answer * 10000000000);
     }
+
+    function getConversionRate (uint256 ethAmount, AggregatorV3Interface priceFeed ) internal view returns (uint256) {
+        uint256 ethPrice = getPrice(priceFeed);
+        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1000000000000000000;
+        // the actual ETH/USD conversation rate, after adjusting the extra 0s.
+        return ethAmountInUsd;
+    }
+
+    
+
+    
 }
